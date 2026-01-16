@@ -1,0 +1,57 @@
+Scénario de test – Application Todo List
+Objectif
+Vérifier le bon fonctionnement des fonctionnalités principales de l’application Todo List:
+Ajouter une tâche
+Valider une tâche
+Supprimer une tâche
+Mettre à jour l’interface correctement après chaque action
+Préconditions
+L’application React Todo est lancée sur http://localhost:3000
+Navigateur utilisé : Chromium
+Playwright et Pytest sont installés
+Dossier screenshots créé pour capturer les étapes
+Étapes de test et résultats attendus
+Étape 1 : Ouvrir l’application
+Action :
+Ouvrir le navigateur
+Naviguer vers http://localhost:3000
+Résultat attendu :
+La page To Do List s’affiche correctement
+Le champ de saisie et le bouton Add sont visibles
+Capture d’écran prise pour documentation
+Étape 2 : Ajouter une tâche
+Action :
+Saisir le texte “automation test” dans le champ de saisie
+Cliquer sur le bouton Add
+Résultat attendu :
+La tâche apparaît dans la liste
+Le texte correspond exactement à “automation test”
+Capture d’écran prise après ajout
+Message console : “Step 2: Add task - done”
+Étape 3 : Valider la tâche
+Action :
+Cliquer sur la tâche “automation test” pour la marquer comme terminée
+Résultat attendu :
+La tâche est marquée comme “done” (classe CSS appliquée)
+Capture d’écran prise après validation
+Message console : “Step 3: Validate task - done”
+Étape 4 : Supprimer la tâche
+Action :
+Cliquer sur le bouton de suppression associé à la tâche
+Résultat attendu :
+La tâche disparaît de la liste
+La liste est vide après suppression
+Capture d’écran prise après suppression
+Message console : “Step 4: Delete task - done”
+Post-conditions
+La liste des tâches est vide
+L’état de l’application est propre
+Les captures d’écran sont disponibles pour chaque étape
+Le rapport HTML montre clairement chaque étape, avec pass/fail et screenshots
+Conclusion
+Le scénario valide le cycle complet d’une tâche dans l’application Todo List : ajout, validation et suppression. Le rapport généré permet de suivre chaque étape et de vérifier visuellement le fonctionnement correct de l’application.
+
+
+
+Run py test :: python -m pytest
+Run react :npm start
