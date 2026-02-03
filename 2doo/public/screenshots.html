@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Screenshots</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4f46e5;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .screenshot-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(79, 70, 229, 0.25);
+        }
+
+        .screenshot-title {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .screenshot-img {
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid #e0e7ff;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .screenshot-img:hover {
+            border-color: #4f46e5;
+        }
+
+        .no-screenshots {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 1.2rem;
+            padding: 60px 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #6366f1;
+        }
+
+        /* Modal for full-size image */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-button">← Back to App</a>
+        <h1>🧪 Test Screenshots</h1>
+        <div id="gallery" class="gallery"></div>
+    </div>
+
+    <!-- Modal for full-size image -->
+    <div id="modal" class="modal">
+        <span class="close-modal" onclick="closeModal()">×</span>
+        <img id="modal-img" src="" alt="Full size screenshot">
+    </div>
+
+    <script>
+        const screenshots = [
+            { name: 'Step 1: Open App', file: 'step1_open_app.png' },
+            { name: 'Step 2: Add Task', file: 'step2_add_task.png' },
+            { name: 'Step 3: Mark as Done', file: 'step3_validate_task.png' },
+            { name: 'Step 4: Delete Task', file: 'step4_delete_task.png' }
+        ];
+
+        const gallery = document.getElementById('gallery');
+
+        async function loadScreenshots() {
+            let hasScreenshots = false;
+
+            for (const screenshot of screenshots) {
+                const path = `/test-results/screenshots/${screenshot.file}`;
+                
+                try {
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        hasScreenshots = true;
+                        const card = document.createElement('div');
+                        card.className = 'screenshot-card';
+                        card.innerHTML = `
+                            <div class="screenshot-title">${screenshot.name}</div>
+                            <img src="${path}" alt="${screenshot.name}" class="screenshot-img" onclick="openModal('${path}')">
+                        `;
+                        gallery.appendChild(card);
+                    }
+                } catch (error) {
+                    console.log(`Screenshot ${screenshot.file} not found`);
+                }
+            }
+
+            if (!hasScreenshots) {
+                gallery.innerHTML = '<div class="no-screenshots">No screenshots available yet. Run the tests first!</div>';
+            }
+        }
+
+        function openModal(imagePath) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = 'flex';
+            modalImg.src = imagePath;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('modal').onclick = function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        }
+
+        loadScreenshots();
+    </script>
+</body>
+</html>

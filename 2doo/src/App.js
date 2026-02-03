@@ -3,6 +3,7 @@ import "./App.css";
 
 function App() {
   const inputRef = useRef();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // read localStorage once at the beginning
   const [todos, setTodos] = useState(() => {
@@ -35,8 +36,40 @@ function App() {
     setTodos(newTodos);
   };
 
+  const openScreenshots = () => {
+    window.open('/screenshots.html', '_blank');
+    setShowDropdown(false);
+  };
+
+  const openReport = () => {
+    window.open('/test-results/report.html', '_blank');
+    setShowDropdown(false);
+  };
+
   return (
     <div className="App">
+      {/* Test Results Button */}
+      <div className="test-button-container">
+        <button 
+          className="test-button"
+          onClick={() => setShowDropdown(!showDropdown)}
+          title="View Test Results"
+        >
+          🧪
+        </button>
+        
+        {showDropdown && (
+          <div className="test-dropdown">
+            <div className="dropdown-item" onClick={openScreenshots}>
+              📸 View Screenshots
+            </div>
+            <div className="dropdown-item" onClick={openReport}>
+              📊 View Test Report
+            </div>
+          </div>
+        )}
+      </div>
+
       <h2>To Do List</h2>
       <div className="to-do-container">
         <ul>
